@@ -1,4 +1,4 @@
-package com.jeppung.foody
+package com.jeppung.foody.util
 
 class Constants {
     companion object {
