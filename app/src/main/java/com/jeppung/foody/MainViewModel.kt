@@ -14,6 +14,7 @@ import com.jeppung.foody.models.FoodRecipe
 import com.jeppung.foody.util.Constants
 import com.jeppung.foody.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -35,16 +36,15 @@ class MainViewModel @Inject constructor(
 
     private suspend fun getRecipesSafeCall(queries: Map<String, String>) {
         _recipesResponse.value = NetworkResult.Loading()
+        delay(1000)
         if(hasInternetConnection()) {
             try {
                 val response = repository.remote.getRecipes(queries)
                 _recipesResponse.value = handleFoodRecipesResponse(response)
             }catch (e: Exception) {
-                Log.d("TAGGG", "catch e: ${e.message}")
                 _recipesResponse.value = NetworkResult.Error("Recipes not found.")
             }
         }else{
-            Log.d("TAGGG", "no internet connection")
             _recipesResponse.value = NetworkResult.Error("No Internet Connection.")
         }
     }
